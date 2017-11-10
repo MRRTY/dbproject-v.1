@@ -11,7 +11,7 @@ public class DatabaseManagerTest {
     DatabaseManager testDatabaseManager;
     @Before
     public void setUp()  {
-        testDatabaseManager = new DatabaseManager();
+        testDatabaseManager = DatabaseManager.getInstance();
     }
 
     @After

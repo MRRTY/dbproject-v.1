@@ -1,11 +1,12 @@
 package services;
 
-import exceptions.NoSuchColumnException;
-import exceptions.NoSuchRowException;
-import exceptions.NotAllowedColumnNameException;
-import exceptions.RowWithSuchPrimaryKeyAlreadyExistsException;
+import exceptions.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -14,10 +15,45 @@ public class Table {
     private List<Column> columns;
     private List<Row> rows;
 
-    public Table(String tableName) {
+    private Table(String tableName, List<Column> columns) {
         this.name = tableName;
-        columns = new ArrayList<Column>();
+        this.columns = columns;
         rows = new ArrayList<Row>();
+    }
+    public void create(Database database){
+        try {
+            Connection conn = MysqlManager.getInstance().getConnection(database.getName());
+            Statement statement = conn.createStatement();
+            StringBuilder query = new StringBuilder();
+            query.append("CREATE TABLE "+ name+"(");
+            Iterator<Column> itr = columns.iterator();
+            while (itr.hasNext()){
+                Column c = itr.next();
+                query.append(c.getName());
+                switch (c.getType()){
+                    case INTEGER: query.append(" INT");
+                        break;
+                    case CHAR: query.append(" CHAR");
+                        break;
+                    case REAL: query.append(" DOUBLE(5)");
+                        break;
+                    case STRING:query.append(" VARCHAR(255)");
+                }
+                if (c.isPrimaryKey()){
+                    query.append(" PRIMARY KEY");
+                }
+                if(itr.hasNext()){
+                    query.append(",");
+                }
+
+            }
+            query.append(")");
+            statement.executeUpdate(query.toString());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
     //Mock
     public void addColumn(Column column){
@@ -73,5 +109,26 @@ public class Table {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public static class Builder{
+        private List<Column> builderColumn = new ArrayList<>();
+        private String name;
+
+        public Builder setTableName(String name){
+            this.name = name;
+            return this;
+        }
+        public Builder addColumn(Column column){
+            builderColumn.add(column);
+            return this;
+        }
+        public Table build(){
+            if(builderColumn.size()<1 || name==null){
+                throw  new InvalidTableException();
+            }
+            return new Table(this.name,this.builderColumn);
+        }
+
     }
 }

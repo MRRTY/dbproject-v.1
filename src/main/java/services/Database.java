@@ -2,9 +2,11 @@ package services;
 
 import exceptions.NoSuchTableException;
 import exceptions.NotAllowedTableNameException;
+import services.enums.SqlType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class Database {
@@ -17,9 +19,18 @@ public class Database {
 
     }
     //Mock
-    public void addTable(String tableName) throws NotAllowedTableNameException {
-        if(!tables.stream().anyMatch(table -> table.getName().equals(tableName))){
-            tables.add(new Table(tableName));
+    public void addTable(String tableName, Map<String,SqlType> columns, String primaryKey) throws NotAllowedTableNameException {
+        if(!tables.stream().anyMatch(table -> table.getName().equals(tableName)) && columns !=null){
+            Table.Builder builder = new Table.Builder();
+            builder.setTableName(tableName);
+            columns.forEach((String name, SqlType type) ->{
+
+                    builder.addColumn(new Column(primaryKey.equals(name),name,type));
+
+            });
+            Table table = builder.build();
+            table.create(this);
+            tables.add(table);
             System.out.println("Table "+ tableName+" creating...");
         }else {
             throw new NotAllowedTableNameException();

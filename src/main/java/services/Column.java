@@ -1,9 +1,17 @@
 package services;
 
-public class Column<T> {
+import services.enums.SqlType;
+
+public class Column {
     private boolean isPrimaryKey;
     private String name;
-    private T type;
+    private SqlType type;
+
+    public Column(boolean isPrimaryKey, String name, SqlType type) {
+        this.isPrimaryKey = isPrimaryKey;
+        this.name = name;
+        this.type = type;
+    }
 
     public boolean isPrimaryKey() {
         return isPrimaryKey;
@@ -21,12 +29,11 @@ public class Column<T> {
         this.name = name;
     }
 
-    public T getType() {
+    public SqlType getType() {
         return type;
     }
 
-    public void setType(T type) {
+    public void setType(SqlType type) {
         this.type = type;
     }
-
 }
