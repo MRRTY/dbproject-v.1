@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NotAllowedColumnNameException {
+public class NotAllowedColumnNameException extends RuntimeException {
 }

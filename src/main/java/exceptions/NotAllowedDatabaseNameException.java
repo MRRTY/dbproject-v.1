@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NotAllowedDatabaseNameException {
+public class NotAllowedDatabaseNameException extends RuntimeException {
 }

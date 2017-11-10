@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NotAllowedTableNameException {
+public class NotAllowedTableNameException extends RuntimeException{
 }

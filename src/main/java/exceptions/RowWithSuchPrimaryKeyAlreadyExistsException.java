@@ -1,4 +1,4 @@
 package exceptions;
 
-public class RowWithSuchPrimaryKeyAlreadyExistsException {
+public class RowWithSuchPrimaryKeyAlreadyExistsException extends RuntimeException {
 }

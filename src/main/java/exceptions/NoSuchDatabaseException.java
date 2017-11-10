@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NoSuchDatabaseException {
+public class NoSuchDatabaseException extends RuntimeException {
 }

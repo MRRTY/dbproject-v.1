@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NoSuchColumnException {
+public class NoSuchColumnException extends RuntimeException {
 }

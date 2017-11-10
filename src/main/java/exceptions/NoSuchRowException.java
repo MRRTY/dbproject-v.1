@@ -1,4 +1,4 @@
 package exceptions;
 
-public class NoSuchRowException {
+public class NoSuchRowException extends RuntimeException {
 }
