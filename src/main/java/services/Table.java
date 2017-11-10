@@ -55,7 +55,20 @@ public class Table {
             e.printStackTrace();
         }
     }
-    //Mock
+
+    public void delete(Database database){
+        Connection conn = null;
+        try {
+            conn = MysqlManager.getInstance().getConnection(database.getName());
+            Statement statement = conn.createStatement();
+            statement.executeUpdate("DROP TABLE "+ this.name+";");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
     public void addColumn(Column column){
         if(!columns.stream().findAny().filter(column1 -> column1.getName().equals(column.getName())).isPresent()){
             columns.add(column);

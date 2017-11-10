@@ -18,7 +18,7 @@ public class Database {
         tables = new ArrayList<>();
 
     }
-    //Mock
+
     public void addTable(String tableName, Map<String,SqlType> columns, String primaryKey) throws NotAllowedTableNameException {
         if(!tables.stream().anyMatch(table -> table.getName().equals(tableName)) && columns !=null){
             Table.Builder builder = new Table.Builder();
@@ -37,11 +37,12 @@ public class Database {
         }
 
     }
-    //Mock
+
     public void removeTable(String tableName){
         if(tables.stream().anyMatch(table -> table.getName().equals(tableName))){
-            Optional<Table> removingTable = tables.stream().findAny().filter(table -> table.getName().equals(tableName));
-            tables.remove(removingTable.get());
+            Table removingTable = tables.stream().findAny().filter(table -> table.getName().equals(tableName)).get();
+            removingTable.delete(this);
+            tables.remove(removingTable);
             System.out.println("Table "+ tableName+" deleting...");
         }else {
             throw new NoSuchTableException();
