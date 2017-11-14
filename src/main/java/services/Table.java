@@ -2,6 +2,7 @@ package services;
 
 import exceptions.*;
 
+import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -10,7 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class Table {
+public class Table implements Serializable {
     private String name;
     private List<Column> columns;
     private List<Row> rows;
@@ -20,55 +21,7 @@ public class Table {
         this.columns = columns;
         rows = new ArrayList<Row>();
     }
-    public void create(Database database){
-        try {
-            Connection conn = MysqlManager.getInstance().getConnection(database.getName());
-            Statement statement = conn.createStatement();
-            StringBuilder query = new StringBuilder();
-            query.append("CREATE TABLE "+ name+"(");
-            Iterator<Column> itr = columns.iterator();
-            while (itr.hasNext()){
-                Column c = itr.next();
-                query.append(c.getName());
-                switch (c.getType()){
-                    case INTEGER: query.append(" INT");
-                        break;
-                    case CHAR: query.append(" CHAR");
-                        break;
-                    case REAL: query.append(" DOUBLE(5)");
-                        break;
-                    case STRING:query.append(" VARCHAR(255)");
-                }
-                if (c.isPrimaryKey()){
-                    query.append(" PRIMARY KEY");
-                }
-                if(itr.hasNext()){
-                    query.append(",");
-                }
 
-            }
-            query.append(")");
-            statement.executeUpdate(query.toString());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void delete(Database database){
-        Connection conn = null;
-        try {
-            conn = MysqlManager.getInstance().getConnection(database.getName());
-            Statement statement = conn.createStatement();
-            statement.executeUpdate("DROP TABLE "+ this.name+";");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void addColumn(Column column){
         if(!columns.stream().findAny().filter(column1 -> column1.getName().equals(column.getName())).isPresent()){
             columns.add(column);

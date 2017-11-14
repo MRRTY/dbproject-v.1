@@ -2,9 +2,10 @@ package services;
 
 import exceptions.NoSuchColumnException;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Row {
+public class Row implements Serializable {
     private List<Cell> cells;
 
     public List<Cell> getCells() {

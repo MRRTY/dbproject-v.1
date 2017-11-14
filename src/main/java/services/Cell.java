@@ -1,6 +1,8 @@
 package services;
 
-public class Cell<T> {
+import java.io.Serializable;
+
+public class Cell<T> implements Serializable{
     private Column column;
     private T value;
 

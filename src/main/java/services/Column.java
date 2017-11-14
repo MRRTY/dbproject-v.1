@@ -2,7 +2,9 @@ package services;
 
 import services.enums.SqlType;
 
-public class Column {
+import java.io.Serializable;
+
+public class Column implements Serializable {
     private boolean isPrimaryKey;
     private String name;
     private SqlType type;
