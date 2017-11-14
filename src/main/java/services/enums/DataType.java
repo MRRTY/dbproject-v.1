@@ -1,5 +1,5 @@
 package services.enums;
 
-public enum SqlType {
+public enum DataType {
     INTEGER,REAL,CHAR,STRING
 }

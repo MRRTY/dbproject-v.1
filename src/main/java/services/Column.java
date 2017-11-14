@@ -1,27 +1,19 @@
 package services;
 
-import services.enums.SqlType;
+import services.enums.DataType;
 
 import java.io.Serializable;
 
 public class Column implements Serializable {
-    private boolean isPrimaryKey;
     private String name;
-    private SqlType type;
+    private DataType type;
 
-    public Column(boolean isPrimaryKey, String name, SqlType type) {
-        this.isPrimaryKey = isPrimaryKey;
+    public Column(String name, DataType type) {
         this.name = name;
         this.type = type;
     }
 
-    public boolean isPrimaryKey() {
-        return isPrimaryKey;
-    }
 
-    public void setPrimaryKey(boolean primaryKey) {
-        isPrimaryKey = primaryKey;
-    }
 
     public String getName() {
         return name;
@@ -31,11 +23,11 @@ public class Column implements Serializable {
         this.name = name;
     }
 
-    public SqlType getType() {
+    public DataType getType() {
         return type;
     }
 
-    public void setType(SqlType type) {
+    public void setType(DataType type) {
         this.type = type;
     }
 }

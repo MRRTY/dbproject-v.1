@@ -31,6 +31,10 @@ public class DatabaseManager implements Serializable {
         }
     }
 
+    public void addDatabase(Database database){
+        LIST_DATABASE.add(database);
+    }
+
     public void removeDatabase(String name) {
         Database removingDatabase = getDatabaseByName(name);
         LIST_DATABASE.remove(removingDatabase);

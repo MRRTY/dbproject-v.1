@@ -6,13 +6,13 @@ import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Table implements Serializable {
     private String name;
+
+
+
     private List<Column> columns;
     private List<Row> rows;
 
@@ -22,25 +22,44 @@ public class Table implements Serializable {
         rows = new ArrayList<Row>();
     }
 
-    public void addColumn(Column column){
-        if(!columns.stream().findAny().filter(column1 -> column1.getName().equals(column.getName())).isPresent()){
-            columns.add(column);
-            System.out.println("Column "+ column.getName()+" added in to "+ name+" table");
-        }else {
-            throw new NotAllowedColumnNameException();
-        }
+
+    public void addRow(List<String> objects){
+        Row row = new Row();
+        row.setCells(createCells(objects));
+        rows.add(row);
+
     }
-    //Mock
-    public void addRow(Row row){
-        Cell primaryCell = row.getCells().stream().findAny().filter(cell -> cell.getColumn().isPrimaryKey()).get();
-        if(rows.stream().map(row1 ->
-                findPrimaryCell(row1)).anyMatch(cell ->
-                cell.getValue().equals(primaryCell.getValue()))) {
-            rows.add(row);
-        }else {
-            throw new RowWithSuchPrimaryKeyAlreadyExistsException();
+    private List<Cell> createCells(List<String> objects){
+        List<Cell> cells = new ArrayList<>();
+        for(int i =0; i<objects.size();i++){
+
+            switch (columns.get(i).getType()){
+                case CHAR:
+                    cells.add(new Cell<Character>(columns.get(i),objects.get(i).charAt(0)));
+                    break;
+                case INTEGER:
+                    cells.add(new Cell<Integer>(columns.get(i),Integer.parseInt(objects.get(i))));
+                    break;
+                case REAL:
+                    cells.add(new Cell<Double>(columns.get(i),Double.parseDouble(objects.get(i))));
+                    break;
+                case STRING:
+                    cells.add(new Cell<String>(columns.get(i),objects.get(i)));
+                    break;
+                default:
+                    throw new InvalidTypeException();
+            }
         }
+        return cells;
     }
+    public void addRow(List<String> objects,int index){
+        Row row = new Row();
+        row.setCells(createCells(objects));
+        rows.add(index,row);
+
+    }
+
+
     public List<Row> selectRowByColumnAndValue(Map<Column,Object> map){
         List<Row> result = new ArrayList<>();
         List<Row> tempTable = new ArrayList<>(rows);
@@ -49,9 +68,7 @@ public class Table implements Serializable {
         });
         return result;
     }
-    private Cell findPrimaryCell(Row row){
-        return row.getCells().stream().findAny().filter(cell -> cell.getColumn().isPrimaryKey()).get();
-    }
+
 
     public Column getColumnByName(String name){
         if(columns.stream().anyMatch(column -> column.getName().equals(name))){
@@ -75,6 +92,23 @@ public class Table implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Row> getRows() {
+        return rows;
+    }
+
+    public List<Column> getColumns() {
+        return columns;
+    }
+
+
+
+    public void editRow(int index, String[] objects) {
+        List<String> vals = Arrays.asList(objects);
+        rows.remove(index);
+        addRow(vals,index);
+
     }
 
     public static class Builder{

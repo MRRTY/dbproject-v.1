@@ -22,4 +22,9 @@ public class Row implements Serializable {
             throw  new NoSuchColumnException();
         }
     }
+
+    @Override
+    public String toString() {
+        return cells.toString();
+    }
 }
