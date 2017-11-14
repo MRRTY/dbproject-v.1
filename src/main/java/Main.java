@@ -14,16 +14,13 @@ public class Main {
                 mainCommand = command;
             }
             String[] commandLine = command.substring(index+1).split(" ");
-
             try{
                 switch (mainCommand) {
                     case ("create_database"):
                         Dispatcher.create_database(commandLine);
                         break;
                     case ("use_database"):
-
                         Dispatcher.use_database(commandLine);
-
                         break;
                     case ("save_database"):
                         Dispatcher.save_database(commandLine);
