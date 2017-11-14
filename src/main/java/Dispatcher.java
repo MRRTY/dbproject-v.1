@@ -83,7 +83,13 @@ public class Dispatcher {
         }
 
     }
-
+    public static void add_row(String[] commandLine) {
+        if(currentTable!=null) {
+            currentTable.addRow(Arrays.asList(commandLine));
+        }else {
+            System.out.println("Current table is not found");
+        }
+    }
     public static void view_table(String[] commandLine){
         if(currentDatabase!=null){
             String tableName = commandLine[0];
@@ -124,14 +130,13 @@ public class Dispatcher {
         }else {
             System.out.println("No current database");
         }
-    }
-
-
-    public static void add_row(String[] commandLine) {
         if(currentTable!=null) {
-            currentTable.addRow(Arrays.asList(commandLine));
+            System.out.println("Current database is " + currentTable.getName());
         }else {
-            System.out.println("Current table is not found");
+            System.out.println("No current database");
         }
     }
+
+
+
 }

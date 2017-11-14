@@ -14,50 +14,55 @@ public class Main {
                 mainCommand = command;
             }
             String[] commandLine = command.substring(index+1).split(" ");
-            switch (mainCommand) {
-                case ("create_database"):
-                    Dispatcher.create_database(commandLine);
-                    break;
-                case ("use_database"):
-                    Dispatcher.use_database(commandLine);
-                    break;
-                case ("save_database"):
-                    Dispatcher.save_database(commandLine);
-                    break;
-                case ("load_database"):
-                    Dispatcher.load_database(commandLine);
-                    break;
-                case ("delete_database"):
-                    Dispatcher.delete_database(commandLine);
-                    break;
-                case ("create_table"):
-                    try {
+
+            try{
+                switch (mainCommand) {
+                    case ("create_database"):
+                        Dispatcher.create_database(commandLine);
+                        break;
+                    case ("use_database"):
+
+                        Dispatcher.use_database(commandLine);
+
+                        break;
+                    case ("save_database"):
+                        Dispatcher.save_database(commandLine);
+                        break;
+                    case ("load_database"):
+                        Dispatcher.load_database(commandLine);
+                        break;
+                    case ("delete_database"):
+                        Dispatcher.delete_database(commandLine);
+                        break;
+                    case ("create_table"):
                         Dispatcher.create_table(commandLine);
-                    }catch (RuntimeException re){
-                        System.out.println("invalid command of creating table");
-                    }
-                    break;
-                case ("use_table"):
-                    Dispatcher.use_table(commandLine);
-                    break;
-                case ("add_row"):
-                    Dispatcher.add_row(commandLine);
-                    break;
-                case ("delete_table"):
-                    Dispatcher.delete_table(commandLine);
-                    break;
-                case ("view_table"):
-                    Dispatcher.view_table(commandLine);
-                    break;
-                case ("edit_row"):
-                    Dispatcher.edit_row(commandLine);
-                    break;
-                case ("status"):
-                    Dispatcher.status();
-                    break;
-                default:
-                    System.out.println("Incorrect command, try again");
-                    break;
+                        break;
+                    case ("use_table"):
+                        Dispatcher.use_table(commandLine);
+                        break;
+                    case ("add_row"):
+                        Dispatcher.add_row(commandLine);
+                        break;
+                    case ("delete_table"):
+                        Dispatcher.delete_table(commandLine);
+                        break;
+                    case ("view_table"):
+                        Dispatcher.view_table(commandLine);
+                        break;
+                    case ("edit_row"):
+                        Dispatcher.edit_row(commandLine);
+                        break;
+                    case ("status"):
+                        Dispatcher.status();
+                        break;
+                    case ("exit"):
+                        System.exit(0);
+                    default:
+                        System.out.println("Incorrect command, try again");
+                        break;
+                }
+            }catch (RuntimeException ex){
+                System.out.println(ex.getMessage());
             }
 
         }
