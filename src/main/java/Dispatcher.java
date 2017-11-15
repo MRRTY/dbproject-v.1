@@ -1,13 +1,12 @@
 import exceptions.InvalidTypeException;
 import services.Database;
 import services.DatabaseManager;
+import services.Row;
 import services.Table;
 import services.enums.DataType;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Dispatcher {
     private static DatabaseManager databaseManager = DatabaseManager.getInstance();
@@ -116,8 +115,12 @@ public class Dispatcher {
                 return DataType.REAL;
             case ("char"):
                 return DataType.CHAR;
-            case ("string[n]"):
-                return DataType.STRING;
+            case ("stringarray"):
+                return DataType.STRING_ARRAY;
+            case ("stringinvl"):
+                return DataType.STRING_INVL;
+            case ("enum"):
+                return DataType.MY_ENUM;
             default:
                 throw new InvalidTypeException();
         }
@@ -131,12 +134,34 @@ public class Dispatcher {
             System.out.println("No current database");
         }
         if(currentTable!=null) {
-            System.out.println("Current database is " + currentTable.getName());
+            System.out.println("Current table is " + currentTable.getName());
         }else {
             System.out.println("No current database");
         }
     }
 
 
+    public static void remove_copy_from_table(String[] commandLine) {
+        String tableName = commandLine[0];
+        Table table = currentDatabase.getTableByName(tableName);
+        List<Row> rowsToRemove = new ArrayList<>();
+        for(Row row : table.getRows()){
+            for (Row row2: table.getRows()){
+                if(row != row2){
+                    if(row.equals(row2) && !rowsToRemove.contains(row)){
+                        rowsToRemove.add(row2);
+                    }
+                }
+            }
+        }
+        for (Row row: rowsToRemove){
+            table.getRows().remove(row);
+        }
+    }
 
+    public static void rename_column_name(String[] commandLine) {
+        String oldName = commandLine[0];
+        String newName = commandLine[1];
+        currentTable.getColumnByName(oldName).setName(newName);
+    }
 }

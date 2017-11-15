@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DatabaseManager implements Serializable {
     private static final DatabaseManager databaseManager = new DatabaseManager();
@@ -47,7 +48,7 @@ public class DatabaseManager implements Serializable {
 
     public Database getDatabaseByName(String name){
         if (LIST_DATABASE.stream().anyMatch(db -> db.getName().equals(name))) {
-            return LIST_DATABASE.stream().findAny().filter(db -> db.getName().equals(name)).get();
+            return LIST_DATABASE.stream().filter(db -> db.getName().equals(name)).collect(Collectors.toList()).get(0);
         } else {
             throw new NoSuchDatabaseException();
         }

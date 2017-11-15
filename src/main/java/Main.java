@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -40,6 +41,9 @@ public class Main {
                     case ("add_row"):
                         Dispatcher.add_row(commandLine);
                         break;
+                    case ("remove_copy"):
+                        Dispatcher.remove_copy_from_table(commandLine);
+                        break;
                     case ("delete_table"):
                         Dispatcher.delete_table(commandLine);
                         break;
@@ -48,6 +52,9 @@ public class Main {
                         break;
                     case ("edit_row"):
                         Dispatcher.edit_row(commandLine);
+                        break;
+                    case ("rename_column_name"):
+                        Dispatcher.rename_column_name(commandLine);
                         break;
                     case ("status"):
                         Dispatcher.status();

@@ -1,18 +1,19 @@
 package services;
 
 import exceptions.*;
+import services.types.MyEmun;
+import services.types.StringArray;
+import services.types.StringInvl;
 
 import java.io.Serializable;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Table implements Serializable {
     private String name;
-
-
-
     private List<Column> columns;
     private List<Row> rows;
 
@@ -43,15 +44,27 @@ public class Table implements Serializable {
                 case REAL:
                     cells.add(new Cell<Double>(columns.get(i),Double.parseDouble(objects.get(i))));
                     break;
-                case STRING:
-                    cells.add(new Cell<String>(columns.get(i),objects.get(i)));
+                case STRING_ARRAY:
+                    cells.add(new Cell<StringArray>(columns.get(i),new StringArray(objects.get(i))));
                     break;
+                case STRING_INVL:
+                    cells.add(new Cell<StringInvl>(columns.get(i),new StringInvl(objects.get(i))));
+                    break;
+                case MY_ENUM:
+                    cells.add(new Cell<MyEmun>(columns.get(i),new MyEmun(objects.get(i))));
+                    break;
+
                 default:
                     throw new InvalidTypeException();
             }
         }
         return cells;
     }
+
+    public Column getColunmByName(String name){
+        return columns.stream().filter(column -> column.getName().equals(name)).collect(Collectors.toList()).get(0);
+    }
+
     public void addRow(List<String> objects,int index){
         Row row = new Row();
         row.setCells(createCells(objects));

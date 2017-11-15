@@ -31,4 +31,22 @@ public class Cell<T> implements Serializable{
     public void setValue(T value) {
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Cell<?> cell = (Cell<?>) o;
+
+        if (column != null ? !column.equals(cell.column) : cell.column != null) return false;
+        return value != null ? value.equals(cell.value) : cell.value == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = column != null ? column.hashCode() : 0;
+        result = 31 * result + (value != null ? value.hashCode() : 0);
+        return result;
+    }
 }

@@ -8,6 +8,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Database implements Serializable {
     private String name;
@@ -64,7 +65,8 @@ public class Database implements Serializable {
 
     public Table getTableByName(String name){
         if (tables.stream().anyMatch(table -> table.getName().equals(name))) {
-            return tables.stream().findAny().filter(table -> table.getName().equals(name)).get();
+            Table t = tables.stream().filter(table -> table.getName().equals(name)).collect(Collectors.toList()).get(0);
+            return t;
         } else {
             throw new NoSuchTableException();
         }
